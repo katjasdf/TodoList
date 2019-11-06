@@ -3,8 +3,9 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
 import Login from './src/Login'
 import Dashboard from './src/Dashboard'
+import TodoAll from './src/TodoAll'
 
-const AppStack = createStackNavigator({ Dashboard: Dashboard});
+const AppStack = createStackNavigator({ Dashboard: Dashboard, TodoAll: TodoAll});
 const AuthStack = createStackNavigator({ LogIn: Login });
 
 const AppNavigator = createSwitchNavigator(

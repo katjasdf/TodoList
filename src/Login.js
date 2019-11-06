@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Button } from 'react-native';
+import { StyleSheet, TextInput, View, Button, KeyboardAvoidingView } from 'react-native';
 
 const LogIn = (props) => {
   const [user, setUser] = useState('')
   const {navigate} = props.navigation
 
   return (
+    <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
     <View style={styles.container}>
        <TextInput
         style={{ width: 300,
@@ -32,6 +33,7 @@ const LogIn = (props) => {
         />
         
     </View>
+    </KeyboardAvoidingView>
   );
 }
 
