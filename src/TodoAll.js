@@ -39,7 +39,7 @@ const TodoAll = (props) => {
 
 const swipeoutBtns = (index) => {
         <Button 
-            title='Delete' 
+            title='Delete'
             onPress={() => deleteTodo(index)}/>
 }
 
