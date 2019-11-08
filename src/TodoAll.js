@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import * as firebase from 'firebase';
-import { Text, ListItem, Button } from 'react-native-elements'
+import { Text, ListItem } from 'react-native-elements'
+import { FAB, Colors } from 'react-native-paper';
+import { blue100 } from 'react-native-paper/lib/typescript/src/styles/colors';
 
 var firebaseConfig = {
     apiKey: "AIzaSyAfhEEloifNSMm2tj3m8VvHc5-NbGiD63k",
@@ -51,10 +53,19 @@ const deleteTodo = (index) => {
                 subtitle={item.date}
                 bottomDivider
                 onLongPress={() => deleteTodo(index)}
+                Button={true}
               />
             ))
           }
       </View>
+
+      <FAB 
+      style={styles.fab}
+      big
+      icon="plus"
+      color={Colors.amber100}
+      onPress={() => console.log('Pressed')}
+      />
 
   </View>
   
@@ -74,5 +85,11 @@ const styles = StyleSheet.create({
     listcontainer: {
       flex: 2,
       width: 400
+    },
+    fab: {
+      position: 'absolute',
+      margin: 16,
+      right: 0,
+      bottom: 0
     },    
 });
