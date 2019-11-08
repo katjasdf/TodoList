@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, StatusBar, Button } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 const Dashboard = (props) => {
   const { params } = props.navigation.state
@@ -7,9 +7,8 @@ const Dashboard = (props) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden={true} /> 
-       <Text style={{fontSize:35, marginLeft:20, marginTop:60}}>Hello {params.user} !</Text>
-       <Button
+      <Text style={{fontSize:35, marginLeft:20, marginTop:60}}>Hello {params.user} !</Text>
+      <Button
         title='Show all Todos'
         onPress={() => navigate('TodoAll')}
         />

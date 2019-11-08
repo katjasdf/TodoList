@@ -43,24 +43,20 @@ const deleteTodo = (index) => {
  
       <Text style={{fontSize: 20, color: '#2089dc', marginTop: 25}}>Todo List</Text>
 
-      <SwipeListView style={{width: 400, height: 600}}
-            data={list}
-            renderItem={ (item, index) => (
-                    <ListItem
-                      key={index}
-                      title={item.todo}
-                      subtitle={item.date}
-                      bottomDivider
-                      onLongPress={() => deleteTodo(index)}
-                    />
-            )}
-            renderHiddenItem={ (item, index) => (
-                <View>
-                    <Button onPress={() => deleteTodo(index)}/>
-                </View>
-            )}
-            rightOpenValue={-75}
-      />
+      <View style={styles.listcontainer}>
+          {
+            list.map((item, index) => (
+              <Swipeout right={() => swipeoutBtns(index)}>
+              <ListItem
+                key={index}
+                title={item.todo}
+                subtitle={item.date}
+                bottomDivider
+              />
+              </Swipeout>
+            ))
+          }
+      </View>
 
   </View>
   
