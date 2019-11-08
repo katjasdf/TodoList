@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import * as firebase from 'firebase';
 import { Text, ListItem, Button } from 'react-native-elements'
-import { SwipeListView } from 'react-native-swipe-list-view';
 
 var firebaseConfig = {
     apiKey: "AIzaSyAfhEEloifNSMm2tj3m8VvHc5-NbGiD63k",
@@ -46,14 +45,13 @@ const deleteTodo = (index) => {
       <View style={styles.listcontainer}>
           {
             list.map((item, index) => (
-              <Swipeout right={() => swipeoutBtns(index)}>
               <ListItem
                 key={index}
                 title={item.todo}
                 subtitle={item.date}
                 bottomDivider
+                onLongPress={() => deleteTodo(index)}
               />
-              </Swipeout>
             ))
           }
       </View>
