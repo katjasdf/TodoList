@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import * as firebase from 'firebase';
 import { Text, ListItem, Button } from 'react-native-elements'
-import Swipeout from 'react-native-swipeout';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 var firebaseConfig = {
     apiKey: "AIzaSyAfhEEloifNSMm2tj3m8VvHc5-NbGiD63k",
@@ -43,19 +43,24 @@ const deleteTodo = (index) => {
  
       <Text style={{fontSize: 20, color: '#2089dc', marginTop: 25}}>Todo List</Text>
 
-      <View style={styles.listcontainer}>
-          {
-            list.map((item, index) => (
-              <ListItem
-                key={index}
-                title={item.todo}
-                subtitle={item.date}
-                bottomDivider
-                onLongPress={() => deleteTodo(index)}
-              />
-            ))
-          }
-      </View>
+      <SwipeListView style={{width: 400, height: 600}}
+            data={list}
+            renderItem={ (item, index) => (
+                    <ListItem
+                      key={index}
+                      title={item.todo}
+                      subtitle={item.date}
+                      bottomDivider
+                      onLongPress={() => deleteTodo(index)}
+                    />
+            )}
+            renderHiddenItem={ (item, index) => (
+                <View>
+                    <Button onPress={() => deleteTodo(index)}/>
+                </View>
+            )}
+            rightOpenValue={-75}
+      />
 
   </View>
   
