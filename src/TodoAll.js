@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import * as firebase from 'firebase';
 import { Text, ListItem } from 'react-native-elements'
 import { FAB, Colors } from 'react-native-paper';
-import { blue100 } from 'react-native-paper/lib/typescript/src/styles/colors';
+import {color} from 'react-native-paper/lib/commonjs/styles/colors'
 
 var firebaseConfig = {
     apiKey: "AIzaSyAfhEEloifNSMm2tj3m8VvHc5-NbGiD63k",
@@ -21,7 +21,7 @@ var firebaseConfig = {
 const TodoAll = (props) => {
   const [list, setList] = useState([])
   const [id, setId] = useState([])
-  const { } = props.navigation.state
+  const {navigate} = props.navigation
 
   React.useEffect(() => {
     firebase.database().ref('items/').on('value', snapshot => {
@@ -63,8 +63,7 @@ const deleteTodo = (index) => {
       style={styles.fab}
       big
       icon="plus"
-      color={Colors.amber100}
-      onPress={() => console.log('Pressed')}
+      onPress={() => navigate('AddTodo')}
       />
 
   </View>
@@ -72,6 +71,8 @@ const deleteTodo = (index) => {
   )
 
 }
+
+TodoAll.navigationOptions = ({navigate}) => ({title: 'Todo list'})
 
 export default TodoAll;
 
@@ -90,6 +91,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       margin: 16,
       right: 0,
-      bottom: 0
+      bottom: 0,
+      backgroundColor: Colors.blue500
     },    
 });
