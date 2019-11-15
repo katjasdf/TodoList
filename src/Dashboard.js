@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import { IconButton, Colors } from 'react-native-paper';
 
 const Dashboard = (props) => {
   const { params } = props.navigation.state
@@ -7,11 +8,20 @@ const Dashboard = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{fontSize:35, marginLeft:20, marginTop:60}}>Hello {params.user} !</Text>
-      <Button
-        title='Show all Todos'
-        onPress={() => navigate('TodoAll')}
-        />
+      <View style={styles.rowcontainer}>
+          <Text style={{fontSize:35, marginLeft:20}}>Hello {params.user} !</Text>
+          <IconButton
+            icon='plus'
+            color={Colors.blue500}
+            size={30}
+          />
+      </View>
+      <View style={styles.maincontainer}>
+        <Button
+          title='Show all Todos'
+          onPress={() => navigate('TodoAll')}
+          />
+      </View>
     </View>
   );
 }
@@ -25,6 +35,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'flex-start',
+    justifyContent: 'flex-end',
+  },
+  rowcontainer: {
+    flex: 1,
+    marginTop: 60,
+    backgroundColor: '#fff',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    justifyContent: 'space-around',
+  },
+  maincontainer: {
+    flex: 10,
+    marginTop: 20,
+    backgroundColor: '#fff',
     justifyContent: 'flex-start',
   },
 });

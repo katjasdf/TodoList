@@ -49,7 +49,7 @@ const deleteTodo = (index) => {
             list.map((item, index) => (
               <ListItem
                 key={index}
-                title={item.todo}
+                title={item.title}
                 subtitle={item.date}
                 bottomDivider
                 onLongPress={() => deleteTodo(index)}
