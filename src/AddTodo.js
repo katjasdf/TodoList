@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import * as firebase from 'firebase';
-import { Input, Button, Text } from 'react-native-elements';
-import { List } from 'react-native-paper';
+import { Input, Button, ButtonGroup, Text } from 'react-native-elements';
 
 const AddTodo = (props) => {
     const [todo, setTodo] = useState({title:'', date: '', category: '', description: ''})
-    const [expanded, setExpanded] = useState(true)
+    const [selectedIndex, setSelIndex] = useState(0)
     const {navigate} = props.navigation
 
 const add = () => {
@@ -16,13 +15,20 @@ const add = () => {
     navigate('TodoAll')
 }
 
-_handlePress = () => {
-    setExpanded(!expanded);
+const updateIndex = (selectedIndex) => {
+    setSelIndex(selectedIndex);
+    if (selectedIndex == 0)
+        setTodo({...todo, category: 'Work'})
+    else if (selectedIndex == 0)
+        setTodo({...todo, category: 'School'})
+    else
+        setTodo({...todo, category: 'Home'})
 }
 
-selectListItem = (value) => {
-    setTodo({...todo, category: value}) value={todo.category}
-}
+const btn1 = () => <Text>Work</Text>;
+const btn2 = () => <Text>School</Text>;
+const btn3 = () => <Text>Home</Text>;
+const buttons = [{ element: btn1 }, { element: btn2 }, { element: btn3 }]
 
 return (
 
@@ -36,32 +42,7 @@ return (
         <Input inputStyle={{marginTop:10}} placeholder='Date'
         onChangeText={value => setTodo({...todo, date: value})} value={todo.date}/>
 
-        <List.Section>
-            <List.Accordion
-                title='Category'
-                expanded={!expanded}
-                onPress={() => _handlePress()}
-            >
-                <List.Item 
-                    title='Work' 
-                    value='work'
-                    onPress={() => selectListItem(value)}    
-                />
-                    
-                <List.Item 
-                    title='School'
-                    value='school'
-                    onPress={value => setTodo({...todo, category: value})} value={todo.category} 
-                />
-
-                <List.Item 
-                    title='Home'
-                    value='home'
-                    onPress={value => setTodo({...todo, category: value})} value={todo.category} 
-                />
-
-            </List.Accordion>
-        </List.Section>
+        <ButtonGroup style={{marginTop: 20}} buttons={buttons} onPress={updateIndex} selectedIndex={selectedIndex} />
 
         <Input inputStyle={{marginTop:10}} placeholder='Description'
         onChangeText={value => setTodo({...todo, description: value})} value={todo.description}/>
