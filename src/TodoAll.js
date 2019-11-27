@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import * as firebase from 'firebase';
 import { Text, ListItem } from 'react-native-elements'
 import { FAB, Colors } from 'react-native-paper';
-import {color} from 'react-native-paper/lib/commonjs/styles/colors'
+import Swipeout from 'react-native-swipeout';
 
 var firebaseConfig = {
     apiKey: "AIzaSyAfhEEloifNSMm2tj3m8VvHc5-NbGiD63k",
@@ -22,6 +22,7 @@ const TodoAll = (props) => {
   const [list, setList] = useState([])
   const [id, setId] = useState([])
   const {navigate} = props.navigation
+  const [swipedIndex, setSwipedIndex] = useState()
 
   React.useEffect(() => {
     firebase.database().ref('items/').on('value', snapshot => {
@@ -35,8 +36,15 @@ const TodoAll = (props) => {
 );
 
 const deleteTodo = (index) => {
-  firebase.database().ref('items/' + id[index]).remove();
+  firebase.database().ref('items/' + id[swipedIndex]).remove();
 }
+
+const swipeoutBtns = [
+  {
+    text: 'Delete',
+    onPress: deleteTodo,
+    backgroundColor: 'red'
+  }]
 
   return (
 
@@ -47,14 +55,14 @@ const deleteTodo = (index) => {
       <View style={styles.listcontainer}>
           {
             list.map((item, index) => (
+              <Swipeout right={swipeoutBtns} onOpen={() => setSwipedIndex(index)} onClose={() => setSwipedIndex(null)} autoClose>
               <ListItem
                 key={index}
                 title={item.title}
                 subtitle={item.date}
                 bottomDivider
-                onLongPress={() => deleteTodo(index)}
-                Button={true}
               />
+              </Swipeout>
             ))
           }
       </View>
