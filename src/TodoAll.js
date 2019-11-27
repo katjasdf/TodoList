@@ -20,6 +20,7 @@ var firebaseConfig = {
 const TodoAll = (props) => {
   const [list, setList] = useState([])
   const [id, setId] = useState([])
+  const [swipedIndex, setSwipedIndex] = useState()
   const { } = props.navigation.state
 
   React.useEffect(() => {
@@ -33,15 +34,16 @@ const TodoAll = (props) => {
   }, []
 );
 
-  const deleteTodo = (index) => {
-    firebase.database().ref('items/' + id[index]).remove();
+  const deleteTodo = () => {
+    firebase.database().ref('items/' + id[swipedIndex]).remove();
   }
 
-const swipeoutBtns = (index) => {
-        <Button 
-            title='Delete'
-            onPress={() => deleteTodo(index)}/>
-}
+  const swipeoutBtns = [
+        {
+          text: 'Delete',
+          onPress: deleteTodo,
+          backgroundColor: 'red'
+        }]
 
   return (
 
@@ -52,7 +54,7 @@ const swipeoutBtns = (index) => {
       <View style={styles.listcontainer}>
           {
             list.map((item, index) => (
-              <Swipeout right={() => swipeoutBtns(index)}>
+              <Swipeout right={swipeoutBtns} onOpen={() => setSwipedIndex(index)} onClose={() => setSwipedIndex(null)} autoClose>
               <ListItem
                 key={index}
                 title={item.todo}
