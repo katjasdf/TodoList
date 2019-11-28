@@ -1,22 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, CheckBox } from 'react-native';
-import * as firebase from 'firebase';
+import firebase from './components/firebase'
 import { Text, ListItem } from 'react-native-elements'
 import { FAB, Colors, Checkbox } from 'react-native-paper';
 import Swipeout from 'react-native-swipeout';
-
-var firebaseConfig = {
-    apiKey: "AIzaSyAfhEEloifNSMm2tj3m8VvHc5-NbGiD63k",
-    authDomain: "todolist-3ef4d.firebaseapp.com",
-    databaseURL: "https://todolist-3ef4d.firebaseio.com",
-    projectId: "todolist-3ef4d",
-    storageBucket: "todolist-3ef4d.appspot.com",
-    messagingSenderId: "960221752935",
-    appId: "1:960221752935:web:b534ed14f5681b09b06ec2",
-    measurementId: "G-D4ZXKTZ78E"
-  };
-
-  firebase.initializeApp(firebaseConfig);
 
 const TodoAll = (props) => {
   const [list, setList] = useState([])
@@ -38,6 +25,7 @@ const TodoAll = (props) => {
 
 const deleteTodo = () => {
   firebase.database().ref('items/' + id[swipedIndex]).remove();
+  todoRef.update({reads: incresement})
 }
 
 const swipeoutBtns = [
@@ -46,14 +34,6 @@ const swipeoutBtns = [
     onPress: deleteTodo,
     backgroundColor: 'red'
   }]
-
-  const checkBox = () => (
-     <Checkbox
-      style={{height: 10, width: 10}}
-      status={checked ? 'checked' : 'unchecked'}
-      onPress={() => {setCheked({ checked: !checked }); }}
-     />
-  )
 
   return (
 
@@ -69,7 +49,15 @@ const swipeoutBtns = [
                 key={index}
                 title={item.title}
                 subtitle={item.date}
-                renderItem={checkBox}
+                rightIcon={() => {
+                  return (
+                      <Checkbox
+                        style={{height: 10, width: 10}}
+                        status={checked ? 'checked' : 'unchecked'}
+                        onPress={() => {setCheked({ checked: !checked }); }}
+                      />
+                    )
+                }}
                 bottomDivider
               />
               </Swipeout>

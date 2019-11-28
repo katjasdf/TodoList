@@ -10,6 +10,7 @@
   "dependencies": {
     "@react-native-community/datetimepicker": "^2.1.0",
     "expo": "^35.0.0",
+    "feather-icons-react": "^0.3.2",
     "firebase": "^7.2.3",
     "react": "16.8.3",
     "react-dom": "16.8.3",

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
-import * as firebase from 'firebase';
+import firebase from './components/firebase'
 import { Input, Button, ButtonGroup, Text } from 'react-native-elements';
 
 const AddTodo = (props) => {
-    const [todo, setTodo] = useState({title:'', date: '', category: '', description: ''})
+    const [todo, setTodo] = useState({title:'', date: '', time: '', category: '', description: ''})
     const [selectedIndex, setSelIndex] = useState(0)
     const {navigate} = props.navigation
     
 const add = () => {
     firebase.database().ref('items/').push(
-        {'title': todo.title, 'date': todo.date, 'category': todo.category, 'description': todo.description}
+        {'title': todo.title, 'date': todo.date, 'time': todo.time, 'category': todo.category, 'description': todo.description}
     )
     navigate('TodoAll')
 }
@@ -19,7 +19,7 @@ const updateIndex = (selectedIndex) => {
     setSelIndex(selectedIndex);
     if (selectedIndex == 0)
         setTodo({...todo, category: 'Work'})
-    else if (selectedIndex == 0)
+    else if (selectedIndex == 1)
         setTodo({...todo, category: 'School'})
     else
         setTodo({...todo, category: 'Home'})
@@ -42,6 +42,9 @@ return (
 
         <Input inputStyle={{marginTop:10}} placeholder='Date'
         onChangeText={value => setTodo({...todo, date: value})} value={todo.date}/>
+
+        <Input inputStyle={{marginTop:10}} placeholder='Time'
+        onChangeText={value => setTodo({...todo, time: value})} value={todo.time}/>
 
         <ButtonGroup style={{marginTop: 20}} buttons={buttons} onPress={updateIndex} selectedIndex={selectedIndex} />
 
