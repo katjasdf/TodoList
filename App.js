@@ -6,7 +6,16 @@ import Dashboard from './src/Dashboard'
 import TodoAll from './src/TodoAll'
 import AddTodo from './src/AddTodo'
 
-const AppStack = createStackNavigator({ Dashboard: Dashboard, TodoAll: TodoAll, AddTodo: AddTodo});
+const AppStack = createStackNavigator({ 
+    Dashboard: Dashboard, 
+    TodoAll: TodoAll, 
+    AddTodo: AddTodo},
+  { 
+    navigationOptions: {
+      headerStyle: { borderBottomWidth: 0 }
+    }
+  });
+
 const AuthStack = createStackNavigator({ LogIn: Login });
 
 const AppNavigator = createSwitchNavigator(

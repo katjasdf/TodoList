@@ -8,6 +8,7 @@ const LogIn = (props) => {
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
     <View style={styles.container}>
+      
        <TextInput
         style={{ width: 300,
         height: 30,

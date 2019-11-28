@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, CheckBox } from 'react-native';
 import * as firebase from 'firebase';
 import { Text, ListItem } from 'react-native-elements'
-import { FAB, Colors } from 'react-native-paper';
+import { FAB, Colors, Checkbox } from 'react-native-paper';
 import Swipeout from 'react-native-swipeout';
 
 var firebaseConfig = {
@@ -23,6 +23,7 @@ const TodoAll = (props) => {
   const [id, setId] = useState([])
   const {navigate} = props.navigation
   const [swipedIndex, setSwipedIndex] = useState()
+  const [checked, setCheked] = useState(false)
 
   React.useEffect(() => {
     firebase.database().ref('items/').on('value', snapshot => {
@@ -33,9 +34,9 @@ const TodoAll = (props) => {
       setId(keys);
     });
   }, []
-);
+  );
 
-const deleteTodo = (index) => {
+const deleteTodo = () => {
   firebase.database().ref('items/' + id[swipedIndex]).remove();
 }
 
@@ -45,6 +46,14 @@ const swipeoutBtns = [
     onPress: deleteTodo,
     backgroundColor: 'red'
   }]
+
+  const checkBox = () => (
+     <Checkbox
+      style={{height: 10, width: 10}}
+      status={checked ? 'checked' : 'unchecked'}
+      onPress={() => {setCheked({ checked: !checked }); }}
+     />
+  )
 
   return (
 
@@ -60,6 +69,7 @@ const swipeoutBtns = [
                 key={index}
                 title={item.title}
                 subtitle={item.date}
+                renderItem={checkBox}
                 bottomDivider
               />
               </Swipeout>
@@ -80,7 +90,7 @@ const swipeoutBtns = [
 
 }
 
-TodoAll.navigationOptions = ({navigate}) => ({title: 'Todo list'})
+TodoAll.navigationOptions = ({navigate}) => ({title: null})
 
 export default TodoAll;
 

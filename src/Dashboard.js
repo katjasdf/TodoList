@@ -10,11 +10,6 @@ const Dashboard = (props) => {
     <View style={styles.container}>
       <View style={styles.rowcontainer}>
           <Text style={{fontSize:35, marginLeft:20}}>Hello {params.user} !</Text>
-          <IconButton
-            icon='plus'
-            color={Colors.blue500}
-            size={30}
-          />
       </View>
       <View style={styles.maincontainer}>
         <Button
@@ -26,7 +21,7 @@ const Dashboard = (props) => {
   );
 }
 
-Dashboard.navigationOptions = ({navigate}) => ({title: 'Dashboard'})
+Dashboard.navigationOptions = ({navigate}) => ({title: null})
 
 export default Dashboard;
 

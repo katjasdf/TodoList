@@ -7,7 +7,7 @@ const AddTodo = (props) => {
     const [todo, setTodo] = useState({title:'', date: '', category: '', description: ''})
     const [selectedIndex, setSelIndex] = useState(0)
     const {navigate} = props.navigation
-
+    
 const add = () => {
     firebase.database().ref('items/').push(
         {'title': todo.title, 'date': todo.date, 'category': todo.category, 'description': todo.description}
@@ -30,6 +30,7 @@ const btn2 = () => <Text>School</Text>;
 const btn3 = () => <Text>Home</Text>;
 const buttons = [{ element: btn1 }, { element: btn2 }, { element: btn3 }]
 
+
 return (
 
     <View style={styles.container}>
@@ -50,7 +51,7 @@ return (
         <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
             <View style={styles.buttoncontainer}>
                 <Button 
-                buttonStyle={{borderRadius:666, width:380, height:50}}
+                buttonStyle={{borderRadius:0, width:450, height:80}}
                 title="Add"
                 onPress={add}/>
             </View>
@@ -66,8 +67,9 @@ export default AddTodo;
 
 const styles = StyleSheet.create({
     buttoncontainer: {
+        flexDirection: 'row',
         alignItems: 'flex-end',
         justifyContent: 'center',
-        marginBottom: 20
+        marginTop: 20
       },
 });
