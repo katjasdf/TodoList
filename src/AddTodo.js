@@ -10,7 +10,7 @@ const AddTodo = (props) => {
     
 const add = () => {
     firebase.database().ref('items/').push(
-        {'title': todo.title, 'date': todo.date, 'time': todo.time, 'category': todo.category, 'description': todo.description}
+        {'title': todo.title, 'date': todo.date, 'time': todo.time, 'category': todo.category, 'description': todo.description, 'checked': false}
     )
     navigate('TodoAll')
 }
@@ -48,7 +48,7 @@ return (
 
         <ButtonGroup style={{marginTop: 20}} buttons={buttons} onPress={updateIndex} selectedIndex={selectedIndex} />
 
-        <Input inputStyle={{marginTop:10}} placeholder='Description'
+        <Input inputStyle={{marginTop:10}} multiline={true} placeholder='Description'
         onChangeText={value => setTodo({...todo, description: value})} value={todo.description}/>
 
         <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>

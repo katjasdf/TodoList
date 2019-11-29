@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
+import { FAB, Colors } from 'react-native-paper';
 import firebase from './components/firebase'
 
 const Dashboard = (props) => {
@@ -21,13 +22,11 @@ const Dashboard = (props) => {
       setList(prods);
       setId(keys);
     });
-   // calculateCategory();
+   calculateCategory();
   }, []
   );
 
- /* const calculateCategory = () => {
-    
-      console.log(Object.values(list[1]));
+  const calculateCategory = () => {
 
       let lschool = 0;
       let lwork = 0;
@@ -35,17 +34,17 @@ const Dashboard = (props) => {
 
       for(i = 0; i < Object.keys(id).length; i++) {
         if (Object.values(list[i]).category = 'Home') {
-          lhome++;
+          lhome = lhome + 1;
         } else if (Object.values(list[i]).category = 'Work') {
-          lwork++;
+          lwork = lwork + 1;
         } else if (Object.values(list[i]).category = 'School') {
-          lschool++;
+          lschool = lschool + 1;
         }
       }
       setHome(lhome);
       setWork(lwork);
       setSchool(lschool);
-  } */
+  }
 
   return (
 
@@ -55,15 +54,15 @@ const Dashboard = (props) => {
             <View style={styles.todoRow}>
                 <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoAll')}>
                     <View style={styles.absoluteView}>
-                        <Icon name='clipboard' type="feather" color='#5bb8eb' size={30} marginBottom={15}/>
+                        <Icon name='clipboard' type="feather" color='#2196f3' size={30} marginBottom={15}/>
                         <Text style={styles.todoname}>All todos</Text>
                         <Text style={styles.items}>{Object.keys(id).length} tasks</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoAll')}>
                     <View style={styles.absoluteView}>
-                        <Icon name='briefcase' type="feather" color='#5bb8eb' size={30} marginBottom={15}/>
-                        <Text style={styles.todoname}> Work</Text>
+                        <Icon name='briefcase' type="feather" color='#2196f3' size={30} marginBottom={15}/>
+                        <Text style={styles.todoname}>Work</Text>
                         <Text style={styles.items}>{work} tasks</Text>
                     </View>
                 </TouchableOpacity>
@@ -71,20 +70,28 @@ const Dashboard = (props) => {
             <View style={styles.todoRow}>
                 <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoAll')}>
                     <View style={styles.absoluteView}>
-                        <Icon name='book' type="feather" color='#5bb8eb' size={30} marginBottom={15}/>
+                        <Icon name='book' type="feather" color='#2196f3' size={30} marginBottom={15}/>
                         <Text style={styles.todoname}>School</Text>
                         <Text style={styles.items}>{school} tasks</Text>
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoAll')}>
                     <View style={styles.absoluteView}>
-                        <Icon name='home' type="feather" color='#5bb8eb' size={30} marginBottom={15}/>
+                        <Icon name='home' type="feather" color='#2196f3' size={30} marginBottom={15}/>
                         <Text style={styles.todoname}>Home</Text>
                         <Text style={styles.items}>{home} tasks</Text>
                     </View>
                 </TouchableOpacity>
             </View>
         </ScrollView>
+
+        <FAB 
+          style={styles.fab}
+          big
+          icon="plus"
+          onPress={() => navigate('AddTodo')}
+        />
+
       </View>
   );
 }
@@ -141,5 +148,13 @@ const styles = StyleSheet.create({
     color: '#bfbfbf',
     marginTop: 3,
   },
+  
+  fab: {
+    position: 'absolute',
+    alignItems: 'flex-end',
+    right: 30,
+    bottom: 30,
+    backgroundColor: Colors.blue500
+  }, 
 
 });

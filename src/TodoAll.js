@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, CheckBox } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import firebase from './components/firebase'
-import { Text, ListItem } from 'react-native-elements'
-import { FAB, Colors, Checkbox } from 'react-native-paper';
+import { FAB, Colors, Checkbox, List } from 'react-native-paper';
 import Swipeout from 'react-native-swipeout';
 
 const TodoAll = (props) => {
@@ -10,7 +9,8 @@ const TodoAll = (props) => {
   const [id, setId] = useState([])
   const {navigate} = props.navigation
   const [swipedIndex, setSwipedIndex] = useState()
-  const [checked, setCheked] = useState(false)
+  const [checked, setChecked] = useState(false)
+  const [reload, setReload] = useState()
 
   React.useEffect(() => {
     firebase.database().ref('items/').on('value', snapshot => {
@@ -20,12 +20,28 @@ const TodoAll = (props) => {
       setList(prods);
       setId(keys);
     });
-  }, []
+  }, [reload]
   );
+
+  const changeStatus = (index) => {
+    let number = 0;
+    if(!checked) {
+      number = number + 1;
+      firebase.database().ref('items/' + id[index]).update(
+        {'checked': true}
+      )
+
+    } else {
+      number = number + 1;
+      firebase.database().ref('items/' + id[index]).update(
+        {'checked': false}
+      )
+    }
+    setReload(number)
+}
 
 const deleteTodo = () => {
   firebase.database().ref('items/' + id[swipedIndex]).remove();
-  todoRef.update({reads: incresement})
 }
 
 const swipeoutBtns = [
@@ -38,32 +54,40 @@ const swipeoutBtns = [
   return (
 
     <View style={styles.container}>
- 
-      <Text style={{fontSize: 20, color: '#2089dc', marginTop: 25}}>Todo List</Text>
 
-      <View style={styles.listcontainer}>
+      <ScrollView style={styles.listcontainer}>
+        <List.Section>
+          <List.Subheader>All todos</List.Subheader>
           {
             list.map((item, index) => (
               <Swipeout right={swipeoutBtns} onOpen={() => setSwipedIndex(index)} onClose={() => setSwipedIndex(null)} autoClose>
-              <ListItem
-                key={index}
-                title={item.title}
-                subtitle={item.date}
-                rightIcon={() => {
-                  return (
-                      <Checkbox
-                        style={{height: 10, width: 10}}
-                        status={checked ? 'checked' : 'unchecked'}
-                        onPress={() => {setCheked({ checked: !checked }); }}
-                      />
-                    )
-                }}
-                bottomDivider
-              />
+                <List.Item
+                  style={{backgroundColor: 'white', 
+                          width: '100%', 
+                          height: 60}}
+                  title={item.title}
+                  right={() => <Checkbox
+                                style={{height: 50, width: 50, color: 'black'}}
+                                status={item.checked ? 'checked' : 'unchecked'}
+                                onPress={() => {
+                                  setChecked(item.checked)
+                                  changeStatus(index)}}
+                              />}
+                  onPress={() => 
+                    navigate('Todo', {
+                    title: item.title,
+                    category: item.category,
+                    date: item.date,
+                    time: item.time,
+                    description: item.description
+                    })}
+                >
+                </List.Item>
               </Swipeout>
             ))
           }
-      </View>
+        </List.Section>
+      </ScrollView>
 
       <FAB 
       style={styles.fab}
@@ -95,9 +119,9 @@ const styles = StyleSheet.create({
     },
     fab: {
       position: 'absolute',
-      margin: 16,
-      right: 0,
-      bottom: 0,
+      alignItems: 'flex-end',
+      right: 30,
+      bottom: 30,
       backgroundColor: Colors.blue500
     },    
 });

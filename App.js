@@ -5,11 +5,13 @@ import Login from './src/Login'
 import Dashboard from './src/Dashboard'
 import TodoAll from './src/TodoAll'
 import AddTodo from './src/AddTodo'
+import Todo from './src/Todo'
 
 const AppStack = createStackNavigator({ 
     Dashboard: Dashboard, 
     TodoAll: TodoAll, 
-    AddTodo: AddTodo},
+    AddTodo: AddTodo,
+    Todo: Todo},
   { 
     navigationOptions: {
       headerStyle: { borderBottomWidth: 0 }
