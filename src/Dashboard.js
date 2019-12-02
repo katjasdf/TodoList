@@ -22,7 +22,7 @@ const Dashboard = (props) => {
       setList(prods);
       setId(keys);
     });
-   calculateCategory();
+  calculateCategory()
   }, []
   );
 
@@ -33,11 +33,11 @@ const Dashboard = (props) => {
       let lhome = 0;
 
       for(i = 0; i < Object.keys(id).length; i++) {
-        if (Object.values(list[i]).category = 'Home') {
+        if (Object.values(list)[i].category == 'Home') {
           lhome = lhome + 1;
-        } else if (Object.values(list[i]).category = 'Work') {
+        } else if (Object.values(list)[i].category == 'Work') {
           lwork = lwork + 1;
-        } else if (Object.values(list[i]).category = 'School') {
+        } else if (Object.values(list)[i].category == 'School') {
           lschool = lschool + 1;
         }
       }
