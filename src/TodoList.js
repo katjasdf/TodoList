@@ -1,47 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { StyleSheet, View, ScrollView } from 'react-native';
 import firebase from './components/firebase'
 import { FAB, Colors, Checkbox, List } from 'react-native-paper';
 import Swipeout from 'react-native-swipeout';
 
-const TodoAll = (props) => {
+const TodoList = (props) => {
   const [list, setList] = useState([])
   const [id, setId] = useState([])
-  const {navigate} = props.navigation
+  const { navigate } = props.navigation
   const [swipedIndex, setSwipedIndex] = useState()
-  const [checked, setChecked] = useState(false)
-  const [reload, setReload] = useState()
+  const { params } = props.navigation.state
 
-  React.useEffect(() => {
+  const user = firebase.auth().currentUser
+
+  const loadData = useCallback(()=> {
     firebase.database().ref('items/').on('value', snapshot => {
-      const data = snapshot.val ();
-      const prods = Object.values(data);
-      const keys = Object.keys(data);
+      const data = snapshot.val();
+      const filteredData = Object.entries(data).reduce(
+        (prev, [key, value]) => ({
+          ...prev,
+          ...(value.user === user.uid ? { [key]: value } : {})
+        }),
+        {}
+      )
+
+      let prods = Object.values(filteredData);
+      const keys = Object.keys(filteredData);
+
+      if (params.category === 'School') {
+        prods = prods.filter(item => item.category === 'School')
+      } else if (params.category === 'Home') {
+        prods = prods.filter(item => item.category === 'Home')
+      } else if (params.category === 'Work') {
+        prods = prods.filter(item => item.category === 'Work')
+      } else {
+        prods = prods
+      }
+
       setList(prods);
       setId(keys);
     });
-  }, [reload]
+  })
+
+  React.useEffect(() => {
+    loadData()
+  }, []
   );
 
-  const changeStatus = (index) => {
-    let number = 0;
-    if(!checked) {
-      number = number + 1;
-      firebase.database().ref('items/' + id[index]).update(
-        {'checked': true}
-      )
-
-    } else {
-      number = number + 1;
-      firebase.database().ref('items/' + id[index]).update(
-        {'checked': false}
-      )
-    }
-    setReload(number)
+  const changeStatus = (index, checked) => {
+    firebase.database().ref('items/' + id[index]).update(
+      {'checked': !checked}
+    ).then(() => {
+      loadData()
+    })
 }
 
 const deleteTodo = () => {
-  firebase.database().ref('items/' + id[swipedIndex]).remove();
+  firebase.database().ref('items/' + id[swipedIndex]).remove().then(() => {
+    loadData()
+  });
 }
 
 const swipeoutBtns = [
@@ -57,22 +74,23 @@ const swipeoutBtns = [
 
       <ScrollView style={styles.listcontainer}>
         <List.Section>
-          <List.Subheader>All todos</List.Subheader>
+          <List.Subheader>{params.category}</List.Subheader>
           {
             list.map((item, index) => (
               <Swipeout right={swipeoutBtns} onOpen={() => setSwipedIndex(index)} onClose={() => setSwipedIndex(null)} autoClose>
                 <List.Item
                   style={{backgroundColor: 'white', 
-                          width: '100%', 
-                          height: 60}}
+                          width: '100%'}}
+                  titleStyle={{textDecorationLine: item.checked ? 'line-through' : 'none'}}
                   title={item.title}
-                  right={() => <Checkbox
-                                style={{height: 50, width: 50, color: 'black'}}
-                                status={item.checked ? 'checked' : 'unchecked'}
-                                onPress={() => {
-                                  setChecked(item.checked)
-                                  changeStatus(index)}}
-                              />}
+                  right={() => <View style={{borderWidth: 1, borderColor: 'black', borderRadius: 10}}>
+                    <Checkbox
+                      status={item.checked ? 'checked' : 'unchecked'}
+                      onPress={() => {
+                        changeStatus(index, item.checked)}
+                      }
+                    />
+                    </View>}
                   onPress={() => 
                     navigate('Todo', {
                     title: item.title,
@@ -102,9 +120,9 @@ const swipeoutBtns = [
 
 }
 
-TodoAll.navigationOptions = ({navigate}) => ({title: null})
+TodoList.navigationOptions = ({navigate}) => ({title: null})
 
-export default TodoAll;
+export default TodoList;
 
 const styles = StyleSheet.create({
     container: {

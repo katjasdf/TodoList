@@ -7,12 +7,22 @@ const AddTodo = (props) => {
     const [todo, setTodo] = useState({title:'', date: '', time: '', category: '', description: ''})
     const [selectedIndex, setSelIndex] = useState(0)
     const {navigate} = props.navigation
+
+    const user = firebase.auth().currentUser
     
 const add = () => {
     firebase.database().ref('items/').push(
-        {'title': todo.title, 'date': todo.date, 'time': todo.time, 'category': todo.category, 'description': todo.description, 'checked': false}
+        {
+            'title': todo.title,
+            'date': todo.date,
+            'time': todo.time,
+            'category': todo.category,
+            'description': todo.description,
+            'checked': false,
+            'user': user.uid
+        }
     )
-    navigate('TodoAll')
+    navigate('Dashboard')
 }
 
 const updateIndex = (selectedIndex) => {

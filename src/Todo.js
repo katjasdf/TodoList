@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Headline, Subheading, Caption, Icon } from 'react-native-paper';
+import { Headline, Subheading, Caption } from 'react-native-paper';
+import { Icon } from 'react-native-elements';
+
+const icons = {
+    Work: 'briefcase',
+    School: 'book',
+    Home: 'home'
+}
 
 const Todo = (props) => {
     const { params } = props.navigation.state
-    const [icon, setIcon] = useState('book');
 
-  /*  React.useEffect(() => {
-        
-    if (params.category == 'Work') {
-        setIcon('briefcase')
-    } else if (params.category == 'School') {
-        setIcon('book')
-    } else if (params.category == 'Home') {
-        setIcon('home')
-    }
-
-    }, []
-    ); */
+    const icon = icons[params.category]
 
     return (
 
@@ -25,6 +20,7 @@ const Todo = (props) => {
     <Subheading>{params.date} {params.time}</Subheading>
     <Headline>{params.title}</Headline>
     <Caption>{params.description}</Caption>
+    <Icon name={icon} type="feather" color='#2196f3' size={30}/>
     </View>
 
     )

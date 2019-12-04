@@ -2,84 +2,66 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements';
-import { FAB, Colors } from 'react-native-paper';
+import { FAB, Colors, IconButton } from 'react-native-paper';
 import firebase from './components/firebase'
 
 const Dashboard = (props) => {
-  const { params } = props.navigation.state
   const { navigate } = props.navigation
-  const [id, setId] = useState([]);
-  const [list, setList] = useState([]);
-  const [home, setHome] = useState(0);
-  const [work, setWork] = useState(0);
-  const [school, setSchool] = useState(0);
+  const [items, setItems] = useState([]);
+
+  const user = firebase.auth().currentUser
 
   React.useEffect(() => {
     firebase.database().ref('items/').on('value', snapshot => {
-      const data = snapshot.val ();
-      const prods = Object.values(data);
-      const keys = Object.keys(data);
-      setList(prods);
-      setId(keys);
+      const data = snapshot.val();
+      const itemData = Object.values(data);
+
+      const userItemData = itemData.filter(prod => prod.user === user.uid)
+
+      setItems(userItemData);
     });
-  calculateCategory()
-  }, []
-  );
+  }, []);
 
-  const calculateCategory = () => {
-
-      let lschool = 0;
-      let lwork = 0;
-      let lhome = 0;
-
-      for(i = 0; i < Object.keys(id).length; i++) {
-        if (Object.values(list)[i].category == 'Home') {
-          lhome = lhome + 1;
-        } else if (Object.values(list)[i].category == 'Work') {
-          lwork = lwork + 1;
-        } else if (Object.values(list)[i].category == 'School') {
-          lschool = lschool + 1;
-        }
-      }
-      setHome(lhome);
-      setWork(lwork);
-      setSchool(lschool);
-  }
+  const itemCount = items.length
+  const workCount = items.filter(item => item.category === 'Work').length
+  const homeCount = items.filter(item => item.category === 'Home').length
+  const schoolCount = items.filter(item => item.category === 'School').length
 
   return (
 
       <View style={styles.container}>
-            <Text style={{fontSize:35, marginLeft:20}}>Hello {params.user} !</Text>
+            <IconButton icon='logout' color={Colors.blue400} size={30} marginBottom={15} onPress={() => navigate('LogIn')}/>
+            <Text style={{fontSize:35, marginLeft:20}}>Hello {user.displayName || user.email}!</Text>
         <ScrollView style={styles.todoContainer}>
             <View style={styles.todoRow}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoAll')}>
+                <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoList', {category: 'All todos'})}>
                     <View style={styles.absoluteView}>
                         <Icon name='clipboard' type="feather" color='#2196f3' size={30} marginBottom={15}/>
                         <Text style={styles.todoname}>All todos</Text>
-                        <Text style={styles.items}>{Object.keys(id).length} tasks</Text>
+                        <Text style={styles.items}>{itemCount} tasks</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoAll')}>
+                <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoList', {category: 'Work'})}>
                     <View style={styles.absoluteView}>
                         <Icon name='briefcase' type="feather" color='#2196f3' size={30} marginBottom={15}/>
                         <Text style={styles.todoname}>Work</Text>
-                        <Text style={styles.items}>{work} tasks</Text>
+                        <Text style={styles.items}>{workCount} tasks</Text>
                     </View>
                 </TouchableOpacity>
             </View>
             <View style={styles.todoRow}>
-                <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoAll')}>
+                <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoList', {category: 'School'})}>
                     <View style={styles.absoluteView}>
                         <Icon name='book' type="feather" color='#2196f3' size={30} marginBottom={15}/>
                         <Text style={styles.todoname}>School</Text>
-                        <Text style={styles.items}>{school} tasks</Text>
+                        <Text style={styles.items}>{schoolCount} tasks</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoAll')}>
+                <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoList', {category: 'Home'})}>
                     <View style={styles.absoluteView}>
                         <Icon name='home' type="feather" color='#2196f3' size={30} marginBottom={15}/>
                         <Text style={styles.todoname}>Home</Text>
-                        <Text style={styles.items}>{home} tasks</Text>
+                        <Text style={styles.items}>{homeCount} tasks</Text>
                     </View>
                 </TouchableOpacity>
             </View>

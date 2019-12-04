@@ -2,18 +2,19 @@ import React, { useState, useCallback } from 'react';
 import { StyleSheet, TextInput, View, Button, KeyboardAvoidingView } from 'react-native';
 import firebase from './components/firebase'
 
-const LogIn = (props) => {
-  const [user, setUser] = useState('')
+const SignUp = (props) => {
+  const [name, setName] = useState('')  
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const {navigate} = props.navigation
 
-  const loginUser = useCallback(() => {
-    firebase.auth().signInWithEmailAndPassword(user, password).then(() => {
-      navigate('Dashboard', {user: user})
-    }).catch(() => {
-      
-    })
-  }, [user, password])
+  const createUser = useCallback(() => {
+    firebase.auth().createUserWithEmailAndPassword(name, email, password) {
+
+    }
+  }
+
+  //  email.updateProfile({displayName: {name}})
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
@@ -25,9 +26,19 @@ const LogIn = (props) => {
         borderColor: 'gray',
         borderWidth: 1,
         marginBottom: 20}}
+        placeholder={'Name'}
+        onChangeText={name => setName(name)}
+        value={String(name)}/>
+
+       <TextInput
+        style={{ width: 300,
+        height: 30,
+        borderColor: 'gray',
+        borderWidth: 1,
+        marginBottom: 20}}
         placeholder={'Email'}
-        onChangeText={user => setUser(user)}
-        value={String(user)}/>
+        onChangeText={email => setEmail(email)}
+        value={String(email)}/>
 
         <TextInput
         style={{ width: 300,
@@ -40,13 +51,13 @@ const LogIn = (props) => {
         secureTextEntry={true}/>
 
         <Button
-        title={'Log in'}
-        onPress={() => loginUser()}
+        title={'Sign up'}
+        onPress={() => navigate('LogIn')}
         />
 
         <Button
-        title={'Sign up'}
-        onPress={() => navigate('SignUp')}
+        title={'Log in'}
+        onPress={() => navigate('LogIn')}
         />
         
     </View>
@@ -54,9 +65,9 @@ const LogIn = (props) => {
   );
 }
 
-LogIn.navigationOptions = ({navigate}) => ({title: null, header: null})
+SignUp.navigationOptions = ({navigate}) => ({title: null, header: null })
 
-export default LogIn;
+export default SignUp;
 
 const styles = StyleSheet.create({
   container: {

@@ -3,13 +3,14 @@ import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack'
 import Login from './src/Login'
 import Dashboard from './src/Dashboard'
-import TodoAll from './src/TodoAll'
+import TodoList from './src/TodoList'
 import AddTodo from './src/AddTodo'
 import Todo from './src/Todo'
+import SignUp from './src/SignUp'
 
 const AppStack = createStackNavigator({ 
     Dashboard: Dashboard, 
-    TodoAll: TodoAll, 
+    TodoList: TodoList, 
     AddTodo: AddTodo,
     Todo: Todo},
   { 
@@ -18,7 +19,7 @@ const AppStack = createStackNavigator({
     }
   });
 
-const AuthStack = createStackNavigator({ LogIn: Login });
+const AuthStack = createStackNavigator({ LogIn: Login, SignUp: SignUp });
 
 const AppNavigator = createSwitchNavigator(
   {
