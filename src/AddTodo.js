@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView } from 'react-native'
 import firebase from './components/firebase'
-import { Input, Button, ButtonGroup, Text } from 'react-native-elements';
+import { ButtonGroup, Text } from 'react-native-elements'
+import { TextInput, Button, Colors } from 'react-native-paper'
 
 const AddTodo = (props) => {
     const [todo, setTodo] = useState({title:'', date: '', time: '', category: '', description: ''})
@@ -44,31 +45,61 @@ const buttons = [{ element: btn1 }, { element: btn2 }, { element: btn3 }]
 return (
 
     <View style={styles.container}>
+        <View style={{width: '95%'}}>
+            <Text style={{fontSize: 20, color: '#2089dc', marginTop: 25}}>Add to Todo List</Text>
 
-        <Text style={{fontSize: 20, color: '#2089dc', marginTop: 25}}>Add to Todo List</Text>
+            <TextInput
+                style={{margin: 10, backgroundColor: 'white'}}
+                label='Title'
+                placeholder='Rule the seven kindoms'
+                theme={{ colors: { primary: Colors.blue500 }}}
+                onChangeText={value => setTodo({...todo, title: value})} 
+                value={todo.title}/>
 
-        <Input inputStyle={{marginTop:15}} placeholder='Todo'
-            onChangeText={value => setTodo({...todo, title: value})} value={todo.title}/>
+            <TextInput
+                style={{margin: 10, backgroundColor: 'white'}}
+                label='Date'
+                placeholder='30.12.2019'
+                theme={{ colors: { primary: Colors.blue500 }}}
+                onChangeText={value => setTodo({...todo, date: value})} 
+                value={todo.date}/>
 
-        <Input inputStyle={{marginTop:10}} placeholder='Date'
-        onChangeText={value => setTodo({...todo, date: value})} value={todo.date}/>
+            <TextInput
+                style={{margin: 10, backgroundColor: 'white'}}
+                label='Time'
+                placeholder='17.00'
+                theme={{ colors: { primary: Colors.blue500 }}}
+                onChangeText={value => setTodo({...todo, time: value})} 
+                value={todo.time}/>
 
-        <Input inputStyle={{marginTop:10}} placeholder='Time'
-        onChangeText={value => setTodo({...todo, time: value})} value={todo.time}/>
+            <ButtonGroup 
+                underlayColor='#2196f3'
+                containerStyle={{height: 60}}
+                style={{marginTop: 20}} 
+                buttons={buttons} 
+                onPress={updateIndex} 
+                selectedIndex={selectedIndex}/>
 
-        <ButtonGroup style={{marginTop: 20}} buttons={buttons} onPress={updateIndex} selectedIndex={selectedIndex} />
+            <TextInput
+                style={{margin: 10, backgroundColor: 'white'}}
+                label='Description'
+                placeholder='And be atleast better than Joffrey while doing it'
+                theme={{ colors: { primary: Colors.blue500 }}}
+                multiline={true}
+                onChangeText={value => setTodo({...todo, description: value})} 
+                value={todo.description}/>
 
-        <Input inputStyle={{marginTop:10}} multiline={true} placeholder='Description'
-        onChangeText={value => setTodo({...todo, description: value})} value={todo.description}/>
-
-        <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-            <View style={styles.buttoncontainer}>
                 <Button 
-                buttonStyle={{borderRadius:0, width:450, height:80}}
-                title="Add"
-                onPress={add}/>
-            </View>
-        </KeyboardAvoidingView>
+                style={{borderRadius: 666, marginTop: 60}}
+                contentStyle={{height: 50}}
+                mode='contained'
+                uppercase={false}
+                color={Colors.blue500}
+                onPress={add}>
+                Add todo   
+                </Button>
+        
+        </View>
 
     </View>
     
@@ -79,10 +110,10 @@ return (
 export default AddTodo;
 
 const styles = StyleSheet.create({
-    buttoncontainer: {
-        flexDirection: 'row',
-        alignItems: 'flex-end',
-        justifyContent: 'center',
-        marginTop: 20
-      },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
 });

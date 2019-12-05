@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { StyleSheet, TextInput, View, Button, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import firebase from './components/firebase'
+import { TextInput, Button, Colors } from 'react-native-paper';
 
 const SignUp = (props) => {
   const [name, setName] = useState('')  
@@ -9,59 +10,66 @@ const SignUp = (props) => {
   const {navigate} = props.navigation
 
   const createUser = useCallback(() => {
-    firebase.auth().createUserWithEmailAndPassword(name, email, password) {
-
-    }
-  }
-
-  //  email.updateProfile({displayName: {name}})
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((user) => {
+                user.updateProfile({
+                    displayName: {name}
+                })
+        })
+        .then(navigate('LogIn'))
+        .catch(() => {
+      
+    })
+  }, [name, email, password])
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+    
     <View style={styles.container}>
-      
-       <TextInput
-        style={{ width: 300,
-        height: 30,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 20}}
-        placeholder={'Name'}
-        onChangeText={name => setName(name)}
-        value={String(name)}/>
+        <View style={{width: '90%'}}>
+            <TextInput
+                style={{margin: 10, backgroundColor: 'white'}}
+                label='Name'
+                placeholder='John Snow'
+                theme={{ colors: { primary: Colors.blue500 }}}
+                onChangeText={name => setName(name)}
+                value={String(name)}/>
 
-       <TextInput
-        style={{ width: 300,
-        height: 30,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 20}}
-        placeholder={'Email'}
-        onChangeText={email => setEmail(email)}
-        value={String(email)}/>
+            <TextInput
+                style={{margin: 10, backgroundColor: 'white'}}
+                label='Email'
+                placeholder='john@snow.com'
+                theme={{ colors: { primary: Colors.blue500 }}}
+                onChangeText={email => setEmail(email)}
+                value={String(email)}/>
 
-        <TextInput
-        style={{ width: 300,
-        height: 30,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 50,}}
-        placeholder={'Password'}
-        onChangeText={password => setPassword(password)}
-        secureTextEntry={true}/>
+            <TextInput
+                style={{margin: 10, backgroundColor: 'white'}}
+                label='Password'
+                placeholder='shhh'
+                theme={{ colors: { primary: Colors.blue500 }}}
+                onChangeText={password => setPassword(password)}
+                secureTextEntry={true}/>
+            
+            <Button
+                style={{borderRadius: 666, marginTop: 60}}
+                contentStyle={{height: 50}}
+                mode='contained'
+                uppercase={false}
+                color={Colors.blue500}
+                onPress={() => createUser()}>
+                Sign up
+                </Button>
 
-        <Button
-        title={'Sign up'}
-        onPress={() => navigate('LogIn')}
-        />
-
-        <Button
-        title={'Log in'}
-        onPress={() => navigate('LogIn')}
-        />
-        
+            <Button
+                style={{borderRadius: 666, marginTop: 30}}
+                contentStyle={{height: 50}}
+                uppercase={false}
+                color={Colors.blue500}
+                onPress={() => navigate('LogIn')}>
+                Already have an account? Log in
+                </Button>
+        </View>
     </View>
-    </KeyboardAvoidingView>
   );
 }
 
@@ -72,7 +80,6 @@ export default SignUp;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -17,10 +17,18 @@ const Todo = (props) => {
     return (
 
     <View style={styles.container}>
-    <Subheading>{params.date} {params.time}</Subheading>
-    <Headline>{params.title}</Headline>
-    <Caption>{params.description}</Caption>
-    <Icon name={icon} type="feather" color='#2196f3' size={30}/>
+    <Subheading style={{fontSize: 20, paddingBottom: 15}}>{params.date} {params.time}</Subheading>
+
+    <View style={styles.rowView}>
+    <Icon 
+        name={icon} 
+        type="feather" 
+        color='#2196f3' 
+        size={30}/>
+    <Headline style={{fontSize: 25, paddingLeft: 20}}>{params.title}</Headline>
+    </View>
+
+    <Caption style={{fontSize: 16}}>{params.description}</Caption>
     </View>
 
     )
@@ -33,10 +41,15 @@ export default Todo;
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'flex-start',
-      marginTop: 100,
-      marginLeft: 20,
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'flex-start',
+        marginTop: 100,
+        marginLeft: 30,
+        marginRight: 15,
     },
+    rowView: {
+        flexDirection: 'row',
+        paddingBottom: 30
+    }
 });

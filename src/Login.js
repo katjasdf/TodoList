@@ -1,56 +1,63 @@
 import React, { useState, useCallback } from 'react';
-import { StyleSheet, TextInput, View, Button, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, KeyboardAvoidingView } from 'react-native';
 import firebase from './components/firebase'
+import { TextInput, Button, Colors } from 'react-native-paper'
 
 const LogIn = (props) => {
-  const [user, setUser] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const {navigate} = props.navigation
 
   const loginUser = useCallback(() => {
-    firebase.auth().signInWithEmailAndPassword(user, password).then(() => {
-      navigate('Dashboard', {user: user})
+    firebase.auth().signInWithEmailAndPassword(email, password).then(() => {
+      navigate('Dashboard', {email: email})
     }).catch(() => {
       
     })
-  }, [user, password])
+  }, [email, password])
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+    
     <View style={styles.container}>
-      
-       <TextInput
-        style={{ width: 300,
-        height: 30,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 20}}
-        placeholder={'Email'}
-        onChangeText={user => setUser(user)}
-        value={String(user)}/>
+        <View style={{width: '90%'}}>
+            <TextInput
+              style={{margin: 10, backgroundColor: 'white'}}
+              label='Email'
+              placeholder='john@snow.com'
+              value='katja.hinkkanen@outlook.com'
+              theme={{ colors: { primary: Colors.blue500 }}}
+              onChangeText={email => setEmail(email)}
+              value={String(email)}/>
 
-        <TextInput
-        style={{ width: 300,
-        height: 30,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 50,}}
-        placeholder={'Password'}
-        onChangeText={password => setPassword(password)}
-        secureTextEntry={true}/>
+            <TextInput
+              style={{margin: 10, backgroundColor: 'white'}}
+              label='Password'
+              placeholder='shhh'
+              theme={{ colors: { primary: Colors.blue500 }}}
+              onChangeText={password => setPassword(password)}
+              secureTextEntry={true}/>
 
-        <Button
-        title={'Log in'}
-        onPress={() => loginUser()}
-        />
+            <Button
+              style={{borderRadius: 666, marginTop: 60}}
+              contentStyle={{height: 50}}
+              mode='contained'
+              uppercase={false}
+              color={Colors.blue500}
+              onPress={() => loginUser()}>
+              Log in  
+            </Button>
 
-        <Button
-        title={'Sign up'}
-        onPress={() => navigate('SignUp')}
-        />
-        
+            <Button
+              style={{borderRadius: 666, marginTop: 30}}
+              contentStyle={{height: 50}}
+              uppercase={false}
+              color={Colors.blue500}
+              onPress={() => navigate('SignUp')}>
+              Don't have an account yet? Sign up
+            </Button>
+
+        </View>
     </View>
-    </KeyboardAvoidingView>
   );
 }
 

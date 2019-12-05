@@ -81,10 +81,12 @@ const swipeoutBtns = [
                 <List.Item
                   style={{backgroundColor: 'white', 
                           width: '100%'}}
-                  titleStyle={{textDecorationLine: item.checked ? 'line-through' : 'none'}}
+                  titleStyle={{textDecorationLine: item.checked ? 'line-through' : 'none',
+                              color: item.checked ? '#949494' : '#2e2e2e'}}
                   title={item.title}
-                  right={() => <View style={{borderWidth: 1, borderColor: 'black', borderRadius: 10}}>
+                  right={() => <View style={{borderWidth: 1, borderColor: '#cfcfcf', borderRadius: 666, width: 40, height: 40}}>
                     <Checkbox
+                      color={Colors.blue500}
                       status={item.checked ? 'checked' : 'unchecked'}
                       onPress={() => {
                         changeStatus(index, item.checked)}

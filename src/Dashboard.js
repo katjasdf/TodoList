@@ -19,6 +19,7 @@ const Dashboard = (props) => {
       const userItemData = itemData.filter(prod => prod.user === user.uid)
 
       setItems(userItemData);
+
     });
   }, []);
 
@@ -28,10 +29,21 @@ const Dashboard = (props) => {
   const schoolCount = items.filter(item => item.category === 'School').length
 
   return (
-
+      
       <View style={styles.container}>
-            <IconButton icon='logout' color={Colors.blue400} size={30} marginBottom={15} onPress={() => navigate('LogIn')}/>
-            <Text style={{fontSize:35, marginLeft:20}}>Hello {user.displayName || user.email}!</Text>
+
+        <IconButton
+          style={{marginTop: 70}}
+          icon='logout' 
+          color={Colors.blue500} 
+          size={30} 
+          marginBottom={15} 
+          onPress={() => navigate('LogIn')}/>
+            
+        <View style={{marginTop: 100}}>
+
+        <Text style={{fontSize:35, marginLeft:20}}>Hello {user.displayName || user.email}!</Text>
+
         <ScrollView style={styles.todoContainer}>
             <View style={styles.todoRow}>
                 <TouchableOpacity style={styles.btn} onPress={() => navigate('TodoList', {category: 'All todos'})}>
@@ -67,6 +79,8 @@ const Dashboard = (props) => {
             </View>
         </ScrollView>
 
+        </View>
+
         <FAB 
           style={styles.fab}
           big
@@ -86,8 +100,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    alignItems: 'flex-start',
-    marginTop: 150,
+    alignItems: 'flex-start'
   },
   todoContainer: {
     flex: 1,
@@ -110,7 +123,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1, //IOS
     elevation: 3,
     marginBottom: 20,
-    marginRight: 20,
+    marginRight: 20
   },
   absoluteView: {
     flex: 1,
